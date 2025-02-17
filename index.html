@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vide Burguer - Gestão de Pedidos</title>
+    <title>Lanchonete - Gestão de Pedidos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,7 +48,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
-            display: flex;
+            display: none; /* Pop-up inicialmente oculto */
             justify-content: center;
             align-items: center;
         }
@@ -193,25 +193,25 @@
         btnInserirPedido.addEventListener('click', function() {
             pedidoForm.style.display = 'block';
             pedidosTabela.style.display = 'none';
-            popup.style.display = 'none';
+            popup.style.display = 'none'; // Garantindo que o pop-up esteja oculto ao iniciar a tela de inserção de pedidos
         });
 
         btnVerPedidos.addEventListener('click', function() {
             pedidoForm.style.display = 'none';
             pedidosTabela.style.display = 'block';
-            popup.style.display = 'none';
+            popup.style.display = 'none'; // Garantindo que o pop-up esteja oculto ao acessar a tela de pedidos
         });
 
         btnVoltar.addEventListener('click', function() {
             pedidoForm.style.display = 'none';
             pedidosTabela.style.display = 'none';
-            popup.style.display = 'none';
+            popup.style.display = 'none'; // Garantindo que o pop-up esteja oculto ao voltar
         });
 
         btnVoltarPedidos.addEventListener('click', function() {
             pedidoForm.style.display = 'none';
             pedidosTabela.style.display = 'none';
-            popup.style.display = 'none';
+            popup.style.display = 'none'; // Garantindo que o pop-up esteja oculto ao voltar para tela inicial
         });
 
         // Atualiza quantidade dos itens
@@ -256,7 +256,7 @@
                 }
             }
             resumoPedido.innerHTML = itemsSummary;
-            popup.style.display = 'flex';
+            popup.style.display = 'flex'; // Exibir pop-up somente após clicar em Concluir Pedido
         });
 
         // Confirmar pedido
