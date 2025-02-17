@@ -6,7 +6,7 @@
     <title>Pedidos da Lanchonete</title>
 </head>
 <body>
-    <h2>Faça seu Pedidov3</h2>
+    <h2>Faça seu Pedidov4</h2>
     <form id="pedidoForm">
         <input type="text" id="nome" placeholder="Seu Nome" required><br><br>
         <input type="text" id="pedido" placeholder="Pedido" required><br><br>
@@ -26,7 +26,7 @@
                 total: document.getElementById("total").value
             };
  
-            fetch("https://script.google.com/macros/s/AKfycbyMw6_NwbYcFw45wPAKTwTepr_XQOukUI4ybObHqXtJaTos2za2HzzLs_JDJEjYm23y5A/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbxC92Oy8Zj4v1eQAWYddEa3GZ9ryZl-viczsr4PjDpJ1VuHcJWlhMuQhl-NhjdaK5k6JQ/exec", {  // Substitua pela URL correta
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
