@@ -3,43 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedidos da Lanchonete</title>
+    <title>Lanchonete - Gestão de Pedidos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #pedidoForm, #pedidosTabela, #popup {
+            display: none;
+        }
+        .item {
+            margin-bottom: 15px;
+        }
+        .item span {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .quantity-controls {
+            display: inline-block;
+            width: 50px;
+            text-align: center;
+        }
+        .quantity-controls button {
+            padding: 5px;
+            width: 30px;
+        }
+        #popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #popupContent {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #popupContent h3 {
+            margin: 0 0 15px;
+        }
+        .popup-button {
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Faça seu Pedidov7</h2>
-    <form id="pedidoForm">
-        <input type="text" id="nome" placeholder="Seu Nome" required><br><br>
-        <input type="text" id="pedido" placeholder="Pedido" required><br><br>
-        <input type="number" id="quantidade" placeholder="Quantidade" required><br><br>
-        <input type="text" id="total" placeholder="Total R$" required><br><br>
-        <button type="submit">Enviar Pedido</button>
-    </form>
- 
+    <h1>Bem-vindo à Lanchonete!</h1>
+
+    <div class="button-container">
+        <button id="btnInserirPedido">Inserir Novo Pedido</button>
+        <button id="btnVerPedidos">Ver Pedidos Inseridos</button>
+    </div>
+
+    <!-- Tela para Inserir Pedido -->
+    <div id="pedidoForm">
+        <h2>Cardápio</h2>
+        <div id="cardapio">
+            <div class="item">
+                <span>Max Burguer - R$20</span>
+                <div class="quantity-controls">
+                    <button class="decrement">-</button>
+                    <span id="maxBurguerQty">0</span>
+                    <button class="increment">+</button>
+                </div>
+            </div>
+            <div class="item">
+                <span>X Tudo - R$23</span>
+                <div class="quantity-controls">
+                    <button class="decrement">-</button>
+                    <span id="xTudoQty">0</span>
+                    <button class="increment">+</button>
+                </div>
+            </div>
+            <div class="item">
+                <span>X Egg Bacon - R$17</span>
+                <div class="quantity-controls">
+                    <button class="decrement">-</button>
+                    <span id="xEggBaconQty">0</span>
+                    <button class="increment">+</button>
+                </div>
+            </div>
+            <div class="item">
+                <span>Coca Pequena - R$3</span>
+                <div class="quantity-controls">
+                    <button class="decrement">-</button>
+                    <span id="cocaPequenaQty">0</span>
+                    <button class="increment">+</button>
+                </div>
+            </div>
+            <div class="item">
+                <span>Heineken - R$10</span>
+                <div class="quantity-controls">
+                    <button class="decrement">-</button>
+                    <span id="heinekenQty">0</span>
+                    <button class="increment">+</button>
+                </div>
+            </div>
+        </div>
+        <button id="concluirPedido">Concluir Pedido</button>
+        <button id="btnVoltar">Voltar</button>
+        <div>
+            <p>Total de itens: <span id="totalItens">0</span></p>
+            <p>Valor total: R$<span id="totalValor">0</span></p>
+        </div>
+    </div>
+
+    <!-- Tela para Ver Pedidos -->
+    <div id="pedidosTabela">
+        <h3>Pedidos Inseridos</h3>
+        <table id="pedidosTabelaContent" border="1">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Pedido</th>
+                    <th>Quantidade</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Os pedidos inseridos serão exibidos aqui -->
+            </tbody>
+        </table>
+        <button id="btnVoltarPedidos">Voltar</button>
+    </div>
+
+    <!-- Pop-up para Confirmar Pedido -->
+    <div id="popup">
+        <div id="popupContent">
+            <h3>Resumo do Pedido</h3>
+            <ul id="resumoPedido">
+                <!-- Resumo dos itens do pedido -->
+            </ul>
+            <button class="popup-button" id="confirmarPedido">Confirmar Pedido</button>
+            <button class="popup-button" id="fecharPopup">Fechar</button>
+        </div>
+    </div>
+
     <script>
-        document.getElementById("pedidoForm").addEventListener("submit", function(event) {
-            event.preventDefault();
- 
-            const data = {
-                nome: document.getElementById("nome").value,
-                pedido: document.getElementById("pedido").value,
-                quantidade: document.getElementById("quantidade").value,
-                total: document.getElementById("total").value
-            };
- 
-fetch("https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbx1xpsAA_AUhWBoxM3YKA5X5Osbh64GAMJeH_bu51hfEIVr1H9e-OF8xJ0JXXFee5xCrA/exec", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.text())
-            .then(text => {
-                console.log("Pedido enviado!", text);
-            })
-            .catch(error => {
-                console.error("Erro ao enviar pedido:", error);
+        // Variáveis e elementos
+        const btnInserirPedido = document.getElementById('btnInserirPedido');
+        const btnVerPedidos = document.getElementById('btnVerPedidos');
+        const pedidoForm = document.getElementById('pedidoForm');
+        const pedidosTabela = document.getElementById('pedidosTabela');
+        const formPedido = document.getElementById('formPedido');
+        const tabelaPedidos = document.getElementById('pedidosTabelaContent').getElementsByTagName('tbody')[0];
+        const btnVoltar = document.getElementById('btnVoltar');
+        const btnVoltarPedidos = document.getElementById('btnVoltarPedidos');
+        const concluirPedido = document.getElementById('concluirPedido');
+        const totalItens = document.getElementById('totalItens');
+        const totalValor = document.getElementById('totalValor');
+        const popup = document.getElementById('popup');
+        const resumoPedido = document.getElementById('resumoPedido');
+        const confirmarPedido = document.getElementById('confirmarPedido');
+        const fecharPopup = document.getElementById('fecharPopup');
+        const quantities = {
+            maxBurguer: 0,
+            xTudo: 0,
+            xEggBacon: 0,
+            cocaPequena: 0,
+            heineken: 0
+        };
+        const prices = {
+            maxBurguer: 20,
+            xTudo: 23,
+            xEggBacon: 17,
+            cocaPequena: 3,
+            heineken: 10
+        };
+
+        // Tela Inicial
+        btnInserirPedido.addEventListener('click', function() {
+            pedidoForm.style.display = 'block';
+            pedidosTabela.style.display = 'none';
+            popup.style.display = 'none';
+        });
+
+        btnVerPedidos.addEventListener('click', function() {
+            pedidoForm.style.display = 'none';
+            pedidosTabela.style.display = 'block';
+            popup.style.display = 'none';
+        });
+
+        btnVoltar.addEventListener('click', function() {
+            pedidoForm.style.display = 'none';
+            pedidosTabela.style.display = 'none';
+            popup.style.display = 'none';
+        });
+
+        btnVoltarPedidos.addEventListener('click', function() {
+            pedidoForm.style.display = 'none';
+            pedidosTabela.style.display = 'none';
+            popup.style.display = 'none';
+        });
+
+        // Atualiza quantidade dos itens
+        function updateQuantities() {
+            document.getElementById('maxBurguerQty').textContent = quantities.maxBurguer;
+            document.getElementById('xTudoQty').textContent = quantities.xTudo;
+            document.getElementById('xEggBaconQty').textContent = quantities.xEggBacon;
+            document.getElementById('cocaPequenaQty').textContent = quantities.cocaPequena;
+            document.getElementById('heinekenQty').textContent = quantities.heineken;
+
+            const totalItems = quantities.maxBurguer + quantities.xTudo + quantities.xEggBacon + quantities.cocaPequena + quantities.heineken;
+            totalItens.textContent = totalItems;
+
+            const totalValue = (quantities.maxBurguer * prices.maxBurguer) + (quantities.xTudo * prices.xTudo) + (quantities.xEggBacon * prices.xEggBacon) + (quantities.cocaPequena * prices.cocaPequena) + (quantities.heineken * prices.heineken);
+            totalValor.textContent = totalValue.toFixed(2);
+        }
+
+        // Incrementa ou decrementa a quantidade
+        document.querySelectorAll('.increment').forEach(button => {
+            button.addEventListener('click', function() {
+                const item = this.parentElement.parentElement.querySelector('span').textContent.split(' ')[0].toLowerCase();
+                quantities[item]++;
+                updateQuantities();
             });
+        });
+
+        document.querySelectorAll('.decrement').forEach(button => {
+            button.addEventListener('click', function() {
+                const item = this.parentElement.parentElement.querySelector('span').textContent.split(' ')[0].toLowerCase();
+                if (quantities[item] > 0) {
+                    quantities[item]--;
+                    updateQuantities();
+                }
+            });
+        });
+
+        // Concluir pedido
+        concluirPedido.addEventListener('click', function() {
+            let itemsSummary = '';
+            for (let item in quantities) {
+                if (quantities[item] > 0) {
+                    itemsSummary += <li>${quantities[item]} x ${item.replace(/([A-Z])/g, ' $1').toUpperCase()} - R$ ${(quantities[item] * prices[item]).toFixed(2)}</li>;
+                }
+            }
+            resumoPedido.innerHTML = itemsSummary;
+            popup.style.display = 'flex';
+        });
+
+        // Confirmar pedido
+        confirmarPedido.addEventListener('click', function() {
+            let items = '';
+            for (let item in quantities) {
+                if (quantities[item] > 0) {
+                    items += ${quantities[item]} x ${item.replace(/([A-Z])/g, ' $1').toUpperCase()}<br>;
+                }
+            }
+            const total = (quantities.maxBurguer * prices.maxBurguer) + (quantities.xTudo * prices.xTudo) + (quantities.xEggBacon * prices.xEggBacon) + (quantities.cocaPequena * prices.cocaPequena) + (quantities.heineken * prices.heineken);
+            const nome = prompt("Digite seu nome para o pedido:");
+
+            // Adicionar à tabela
+            const novaLinha = tabelaPedidos.insertRow();
+            novaLinha.innerHTML = <td>${nome}</td><td>${items}</td><td>${total.toFixed(2)}</td>;
+            popup.style.display = 'none';
+            quantities.maxBurguer = quantities.xTudo = quantities.xEggBacon = quantities.cocaPequena = quantities.heineken = 0;
+            updateQuantities();
+        });
+
+        // Fechar pop-up
+        fecharPopup.addEventListener('click', function() {
+            popup.style.display = 'none';
         });
     </script>
 </body>
