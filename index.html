@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciamento de Pedidos</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    form { max-width: 500px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px 15px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #218838; }
+  </style>
+</head>
+<body>
+  <h1>Faça seu Pedido</h1>
+  <form id="pedidoForm">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
+ 
+    <label for="item">Item:</label>
+    <input type="text" id="item" name="item" required>
+ 
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" name="quantidade" required>
+ 
+    <label for="observacoes">Observações:</label>
+    <textarea id="observacoes" name="observacoes"></textarea>
+ 
+    <button type="submit">Enviar Pedido</button>
+  </form>
+ 
+  <script>
+    document.getElementById('pedidoForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var formData = new FormData(this);
+      fetch('https://script.google.com/macros/s/AKfycbyk0qGoz2vkw5ry0lMtyzAx0hdGGdKFv4rCDte63spcdOTiakvfGdRYAdgTYBiadPd0/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert(data);
+        this.reset();
+      })
+      .catch(error => console.error('Erro:', error));
+    });
+  </script>
+</body>
+</html>
