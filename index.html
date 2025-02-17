@@ -28,10 +28,15 @@
  
             fetch(https://script.google.com/macros/s/AKfycbzWhSc0n-NnbvwcFA1THc9pf_NqXdcRd-EDWg4zMUmH36GEDBM5t_x_2z80EFdpZzDYPg/exec, {
                 method: "POST",
-                mode: "no-cors",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
-            }).then(() => alert("Pedido enviado!"));
+            })
+            .then(response => response.text())
+            .then(text => {
+                alert("Pedido enviado!");
+                console.log("Resposta do servidor:", text);
+            })
+            .catch(error => console.error("Erro ao enviar pedido:", error));
         });
     </script>
 </body>
