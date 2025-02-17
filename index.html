@@ -96,6 +96,7 @@
                     </div>
                 </div>
                 <br>
+                <h4>Total: R$ <span id="totalPedido">0.00</span></h4>
                 <button class="btn" type="button" id="revisarPedido">Revisar Pedido</button>
             </form>
         </div>
@@ -157,16 +158,20 @@
         var popup = document.getElementById("popup");
         var resumoPedido = document.getElementById("resumoPedido");
         var pedidosTabelaContent = document.getElementById("pedidosTabelaContent");
+        var totalPedido = document.getElementById("totalPedido");
 
         // Referências ao formulário e controles de incremento e decremento
         var incrementoBtns = document.querySelectorAll('.incremento');
         var decrementoBtns = document.querySelectorAll('.decremento');
         
-        // Função para atualizar as quantidades visíveis
+        // Função para atualizar as quantidades visíveis e o total
         function updateQuantities() {
+            var total = 0;
             for (var item in quantities) {
                 document.getElementById(item + 'Qtd').textContent = quantities[item];
+                total += quantities[item] * prices[item];
             }
+            totalPedido.textContent = total.toFixed(2);
         }
 
         // Incrementar a quantidade de um item
@@ -192,15 +197,15 @@
         // Revisar pedido e mostrar resumo no pop-up
         revisarPedido.addEventListener('click', function() {
             var itemsSummary = '';
-            var totalPedido = 0; // Variável para somar o total do pedido
+            var totalPedidoValue = 0; // Variável para somar o total do pedido
             for (var item in quantities) {
                 if (quantities[item] > 0) {
                     var itemTotal = quantities[item] * prices[item]; // Soma do valor do item
-                    totalPedido += itemTotal; // Adiciona o valor do item ao total do pedido
+                    totalPedidoValue += itemTotal; // Adiciona o valor do item ao total do pedido
                     itemsSummary += '<li>' + quantities[item] + ' x ' + item.replace(/([A-Z])/g, ' $1').toUpperCase() + ' - R$ ' + itemTotal.toFixed(2) + '</li>';
                 }
             }
-            itemsSummary += '<li><strong>Total: R$ ' + totalPedido.toFixed(2) + '</strong></li>'; // Soma total do pedido
+            itemsSummary += '<li><strong>Total: R$ ' + totalPedidoValue.toFixed(2) + '</strong></li>'; // Soma total do pedido
             resumoPedido.innerHTML = itemsSummary;
             popup.style.display = 'flex'; // Exibir pop-up somente após clicar em Revisar Pedido
         });
@@ -214,15 +219,12 @@
                 }
             }
             var total = (quantities.maxBurguer * prices.maxBurguer) + (quantities.xTudo * prices.xTudo) + (quantities.xEggBacon * prices.xEggBacon) + (quantities.cocaPequena * prices.cocaPequena) + (quantities.heineken * prices.heineken);
-            var row = document.createElement('tr');
-            row.innerHTML = '<td>Cliente</td><td>' + items + '</td><td>R$ ' + total.toFixed(2) + '</td>';
-            pedidosTabelaContent.appendChild(row);
-            quantities = { maxBurguer: 0, xTudo: 0, xEggBacon: 0, cocaPequena: 0, heineken: 0 }; // Limpa as quantidades após o envio
-            updateQuantities(); // Atualiza a tela
-            popup.style.display = 'none'; // Fecha o pop-up
+            pedidosTabelaContent.innerHTML += '<tr><td>Cliente</td><td>' + items + '</td><td>R$ ' + total.toFixed(2) + '</td></tr>';
+            updateQuantities();
+            popup.style.display = 'none'; // Fechar pop-up
         });
 
-        // Fechar pop-up sem enviar pedido
+        // Fechar o pop-up sem enviar pedido
         fecharPopup.addEventListener('click', function() {
             popup.style.display = 'none';
         });
