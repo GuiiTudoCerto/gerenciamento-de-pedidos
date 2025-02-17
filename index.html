@@ -247,16 +247,16 @@
 
         // Concluir pedido e mostrar resumo no pop-up
 concluirPedido.addEventListener('click', function() {
-    let itemsSummary = '';
-    let totalPedido = 0;  // Variável para somar o total do pedido
-    for (let item in quantities) {
+    var itemsSummary = '';
+    var totalPedido = 0;  // Variável para somar o total do pedido
+    for (var item in quantities) {
         if (quantities[item] > 0) {
-            const itemTotal = quantities[item] * prices[item]; // Soma do valor do item
+            var itemTotal = quantities[item] * prices[item]; // Soma do valor do item
             totalPedido += itemTotal; // Adiciona o valor do item ao total do pedido
-            itemsSummary += <li>${quantities[item]} x ${item.replace(/([A-Z])/g, ' $1').toUpperCase()} - R$ ${itemTotal.toFixed(2)}</li>;
+            itemsSummary += '<li>' + quantities[item] + ' x ' + item.replace(/([A-Z])/g, ' $1').toUpperCase() + ' - R$ ' + itemTotal.toFixed(2) + '</li>';
         }
     }
-    itemsSummary += <li><strong>Total: R$ ${totalPedido.toFixed(2)}</strong></li>;  // Soma total do pedido
+    itemsSummary += '<li><strong>Total: R$ ' + totalPedido.toFixed(2) + '</strong></li>';  // Soma total do pedido
     resumoPedido.innerHTML = itemsSummary;
     popup.style.display = 'flex'; // Exibir pop-up somente após clicar em Concluir Pedido
 });
