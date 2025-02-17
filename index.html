@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lanchonete - Gestão de Pedidos</title>
+    <title>Vide Burguer - Gestão de Pedidos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -229,22 +229,21 @@
             totalValor.textContent = totalValue.toFixed(2);
         }
 
-        // Incrementa ou decrementa a quantidade
-        document.querySelectorAll('.increment').forEach(button => {
-            button.addEventListener('click', function() {
-                const item = this.parentElement.parentElement.querySelector('span').textContent.split(' ')[0].toLowerCase();
-                quantities[item]++;
+        // Incrementar e decrementar quantidade
+        const quantityControls = document.querySelectorAll('.quantity-controls');
+        quantityControls.forEach(control => {
+            control.querySelector('.increment').addEventListener('click', function() {
+                const itemId = control.parentElement.querySelector('span').textContent.toLowerCase().replace(' ', '');
+                quantities[itemId]++;
                 updateQuantities();
             });
-        });
 
-        document.querySelectorAll('.decrement').forEach(button => {
-            button.addEventListener('click', function() {
-                const item = this.parentElement.parentElement.querySelector('span').textContent.split(' ')[0].toLowerCase();
-                if (quantities[item] > 0) {
-                    quantities[item]--;
-                    updateQuantities();
+            control.querySelector('.decrement').addEventListener('click', function() {
+                const itemId = control.parentElement.querySelector('span').textContent.toLowerCase().replace(' ', '');
+                if (quantities[itemId] > 0) {
+                    quantities[itemId]--;
                 }
+                updateQuantities();
             });
         });
 
@@ -283,6 +282,9 @@
         fecharPopup.addEventListener('click', function() {
             popup.style.display = 'none';
         });
+
+        // Inicializa a tela
+        updateQuantities();
     </script>
 </body>
 </html>
