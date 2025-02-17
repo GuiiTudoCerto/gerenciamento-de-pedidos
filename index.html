@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vide Burguer- Gestão de Pedidos</title>
+    <title>Lanchonete - Gestão de Pedidos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -163,8 +163,6 @@
         const btnVerPedidos = document.getElementById('btnVerPedidos');
         const pedidoForm = document.getElementById('pedidoForm');
         const pedidosTabela = document.getElementById('pedidosTabela');
-        const formPedido = document.getElementById('formPedido');
-        const tabelaPedidos = document.getElementById('pedidosTabelaContent').getElementsByTagName('tbody')[0];
         const btnVoltar = document.getElementById('btnVoltar');
         const btnVoltarPedidos = document.getElementById('btnVoltarPedidos');
         const concluirPedido = document.getElementById('concluirPedido');
@@ -202,6 +200,7 @@
             popup.style.display = 'none'; // Garantindo que o pop-up esteja oculto ao acessar a tela de pedidos
         });
 
+        // Voltar para tela inicial
         btnVoltar.addEventListener('click', function() {
             pedidoForm.style.display = 'none';
             pedidosTabela.style.display = 'none';
@@ -233,21 +232,20 @@
         const quantityControls = document.querySelectorAll('.quantity-controls');
         quantityControls.forEach(control => {
             control.querySelector('.increment').addEventListener('click', function() {
-                const itemId = control.parentElement.querySelector('span').textContent.toLowerCase().replace(' ', '');
-                quantities[itemId]++;
+                const item = control.parentNode.querySelector('span').textContent.toLowerCase().replace(/ /g, '');
+                quantities[item]++;
                 updateQuantities();
             });
-
             control.querySelector('.decrement').addEventListener('click', function() {
-                const itemId = control.parentElement.querySelector('span').textContent.toLowerCase().replace(' ', '');
-                if (quantities[itemId] > 0) {
-                    quantities[itemId]--;
+                const item = control.parentNode.querySelector('span').textContent.toLowerCase().replace(/ /g, '');
+                if (quantities[item] > 0) {
+                    quantities[item]--;
+                    updateQuantities();
                 }
-                updateQuantities();
             });
         });
 
-        // Concluir pedido
+        // Concluir pedido e mostrar resumo no pop-up
         concluirPedido.addEventListener('click', function() {
             let itemsSummary = '';
             for (let item in quantities) {
@@ -271,7 +269,7 @@
             const nome = prompt("Digite seu nome para o pedido:");
 
             // Adicionar à tabela
-            const novaLinha = tabelaPedidos.insertRow();
+            const novaLinha = pedidosTabelaContent.insertRow();
             novaLinha.innerHTML = <td>${nome}</td><td>${items}</td><td>${total.toFixed(2)}</td>;
             popup.style.display = 'none';
             quantities.maxBurguer = quantities.xTudo = quantities.xEggBacon = quantities.cocaPequena = quantities.heineken = 0;
