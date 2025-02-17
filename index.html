@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vide Burguer</title>
+    <title>Pedidos da Lanchonete</title>
     <style>
         /* Estilos para a tela e pop-up */
         body {
@@ -54,12 +54,14 @@
 </head>
 <body>
     <div class="container">
+        <!-- Tela Inicial -->
         <div id="telaInicial" class="tela active">
             <h2>Bem-vindo à Lanchonete</h2>
             <button class="btn" id="btnInserirPedido">Inserir Novo Pedido</button>
             <button class="btn" id="btnVerPedidos">Ver Pedidos Inseridos</button>
         </div>
 
+        <!-- Tela de Inserção de Pedido -->
         <div id="telaPedido" class="tela">
             <h3>Faça seu Pedido</h3>
             <form id="pedidoForm">
@@ -101,6 +103,7 @@
             </form>
         </div>
 
+        <!-- Tela de Pedidos -->
         <div id="telaPedidos" class="tela">
             <h3>Pedidos Inseridos</h3>
             <table border="1" id="tabelaPedidos">
